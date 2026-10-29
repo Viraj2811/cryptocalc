@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crypto Buy Calculator: How Much Crypto Will I Get for My Money?</title>
+<meta name="description" content="Free crypto buy calculator. Enter your budget, payment charges, exchange fee, GST and spread to see exactly how much Bitcoin or other crypto reaches your account.">
+<link rel="canonical" href="https://YOUR-DOMAIN.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Crypto Buy Calculator: How much will I actually get?">
+<meta property="og:description" content="See the real amount of crypto you receive after payment charges, exchange fees, GST and spread.">
+<meta property="og:url" content="https://YOUR-DOMAIN.com/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#EDF1EE">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why do I get less crypto than the money I pay?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Several small costs come out of your payment before coins are bought: the payment charge from your bank or card, the exchange trading fee, GST on that fee in India, and the spread between the quoted price and the price you actually trade at. This calculator adds them all up so you can see the real amount."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is spread or slippage?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Spread is the gap between the price to buy and the price to sell. Slippage is when a larger or fast order fills at a slightly worse price than the one you saw. Both make your effective price higher than the quoted price."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between maker and taker fees?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A maker adds an order to the order book, usually a limit order that waits to be filled. A taker fills an existing order immediately, as with a market order. Taker fees are usually higher, and the calculator uses the fee rate you enter."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is GST charged on crypto purchases in India?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Indian exchanges charge 18% GST on their trading fee, not on the value of the coins you buy. Turn on the GST option to include it. TDS and income tax on selling are not calculated here."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where does the price come from?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Live prices come from CoinGecko and can differ slightly from the order book on your exchange. You can type your own price at any time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this calculator store my data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No account is needed. Your choices are saved only in your own browser so they are there next time. See the privacy page for details."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Crypto Buy Calculator",
+  "url": "https://YOUR-DOMAIN.com/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232B3FD6'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='white' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="top">
+  <h1>What will actually reach your wallet?</h1>
+  <p>Fees, charges and spread take a bite before your coins arrive. Enter what you plan to spend and see the real number.</p>
+</header>
+
+<main class="layout">
+  <section class="panel" aria-labelledby="inputs-h">
+    <h2 id="inputs-h" class="sr-only">Your purchase</h2>
+
+    <div class="tabs" role="group" aria-label="Calculation direction">
+      <button type="button" id="tab-budget" class="tab is-on" aria-pressed="true">I have a budget</button>
+      <button type="button" id="tab-coins" class="tab" aria-pressed="false">I want a coin amount</button>
+    </div>
+
+    <div class="row2">
+      <label class="field"><span>Coin</span><select id="coin"></select></label>
+      <label class="field"><span>Currency</span><select id="currency"></select></label>
+    </div>
+
+    <label class="field"><span id="amount-label">Amount you will spend</span>
+      <div class="adorn"><b id="amount-unit">₹</b><input id="amount" type="text" inputmode="decimal" autocomplete="off" placeholder="10000"></div>
+    </label>
+
+    <div class="field">
+      <label for="price"><span>Price per coin</span></label>
+      <div class="adorn"><b id="price-unit">₹</b><input id="price" type="text" inputmode="decimal" autocomplete="off" placeholder="Loading live price…"></div>
+      <div class="hint" id="price-status" role="status" aria-live="polite"></div>
+      <div class="hint"><button type="button" class="link" id="price-live">Use live price</button><button type="button" class="link" id="price-refresh">Refresh</button></div>
+    </div>
+
+    <fieldset class="group">
+      <legend>Payment charges</legend>
+      <div class="chips" id="pay-chips">
+        <button type="button" class="chip" data-pct="0">UPI / bank 0%</button>
+        <button type="button" class="chip" data-pct="2.5">Card 2.5%</button>
+      </div>
+      <div class="row2">
+        <label class="field"><span>Charge %</span><input id="payPct" type="text" inputmode="decimal" value="0"></label>
+        <label class="field"><span>Flat charge</span><input id="payFlat" type="text" inputmode="decimal" value="0"></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="group">
+      <legend>Exchange fee</legend>
+      <div class="row2">
+        <label class="field"><span>Exchange</span><select id="exchange"></select></label>
+        <label class="field"><span>Fee %</span><input id="feePct" type="text" inputmode="decimal" value="0.1"></label>
+      </div>
+      <label class="check"><input type="checkbox" id="gstOn"> Add GST on the fee (India, 18%)</label>
+      <label class="field"><span>Spread or slippage %</span><input id="spreadPct" type="text" inputmode="decimal" value="0"></label>
+      <div class="hint" id="fee-note"></div>
+    </fieldset>
+  </section>
+
+  <section class="receipt" aria-labelledby="result-h" aria-live="polite">
+    <h2 id="result-h" class="sr-only">Result</h2>
+    <div id="errors" class="errors" hidden></div>
+    <div id="result" hidden>
+      <div class="hero-label" id="hero-label">You will receive about</div>
+      <div class="hero" id="hero"></div>
+      <div class="hero-sub" id="hero-sub"></div>
+
+      <div class="bar" id="bar" role="img" aria-label="Where your money goes"></div>
+      <ul class="rows" id="rows"></ul>
+
+      <div class="cost" id="cost"></div>
+      <p class="warn" id="warn" hidden></p>
+      <div class="referrals" id="referrals" hidden>
+        <h3>Ready to buy?</h3>
+        <ul id="referral-list"></ul>
+        <p class="hint">Sponsored links: we may earn a commission at no extra cost to you. Fees and prices on the exchange can differ from this estimate.</p>
+      </div>
+    </div>
+    <p class="empty" id="empty">Enter an amount to see your breakdown.</p>
+  </section>
+</main>
+
+<section class="content" aria-labelledby="how-h">
+  <h2 id="how-h">How the crypto buy calculator works</h2>
+  <p>When you buy crypto, the money you pay is not the money that buys coins. The calculator follows your cash through each step so the final number matches what you can expect in your wallet.</p>
+  <ol>
+    <li>Your payment method may take a charge first, a percentage, a flat amount or both.</li>
+    <li>The exchange then takes its trading fee from what is left, plus 18% GST on that fee if you turn it on.</li>
+    <li>The remaining money buys coins at the price you entered, adjusted for any spread or slippage.</li>
+  </ol>
+  <p>Switch to "I want a coin amount" to work backwards: enter how much crypto you want and see the cash you need to pay.</p>
+
+  <h2 id="faq-h">Frequently asked questions</h2>
+  <div class="faq">
+    <details><summary>Why do I get less crypto than the money I pay?</summary><p>Several small costs come out of your payment before coins are bought: the payment charge from your bank or card, the exchange trading fee, GST on that fee in India, and the spread between the quoted price and the price you actually trade at. This calculator adds them all up so you can see the real amount.</p></details>
+    <details><summary>What is spread or slippage?</summary><p>Spread is the gap between the price to buy and the price to sell. Slippage is when a larger or fast order fills at a slightly worse price than the one you saw. Both make your effective price higher than the quoted price.</p></details>
+    <details><summary>What is the difference between maker and taker fees?</summary><p>A maker adds an order to the order book, usually a limit order that waits to be filled. A taker fills an existing order immediately, as with a market order. Taker fees are usually higher, and the calculator uses the fee rate you enter.</p></details>
+    <details><summary>Is GST charged on crypto purchases in India?</summary><p>Indian exchanges charge 18% GST on their trading fee, not on the value of the coins you buy. Turn on the GST option to include it. TDS and income tax on selling are not calculated here.</p></details>
+    <details><summary>Where does the price come from?</summary><p>Live prices come from CoinGecko and can differ slightly from the order book on your exchange. You can type your own price at any time.</p></details>
+    <details><summary>Does this calculator store my data?</summary><p>No account is needed. Your choices are saved only in your own browser so they are there next time. See the privacy page for details.</p></details>
+  </div>
+</section>
+
+<footer class="foot">
+  <p><strong>Not financial advice.</strong> This tool gives estimates only. Crypto prices are volatile, and your exchange's final amounts may differ. Prices come from CoinGecko.</p>
+  <p><a href="disclaimer.html">Disclaimer and affiliate disclosure</a> · <a href="privacy.html">Privacy</a></p>
+</footer>
+
+
+<script src="js/config.js"></script>
+<script src="js/calc.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+# Static-only deploy: live prices are fetched directly from CoinGecko in the browser.
+[build]
+  publish = "public"
